@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    img {
+      width: 100px;
+      height: 100px;
+    }
+    .the_game {
+      display: flex;
+      justify-content: space-around;
+    }
+    body {
+      text-align: center;
+      font-size: 40px;
+      font-family: fantasy;
+      background-color: green;
+    }
+    button {
+      background-color: dodgerblue;
+      color: black;
+      font-weight: bolder;
+      border: none;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 8px;
+      font-size: 30px;
+    }
+  </style>
+  <body>
+    <div class="the_game">
+      <div>
+        <img id="my_card" src="img/opp.jpg" />
+        <p>Your score:<span id="my_score">&nbsp;0</span></p>
+      </div>
+      <p id="alert"></p>
+      <div>
+        <img id="computer_card" src="img/opp.jpg" />
+        <p>Computer score:<span id="computer_score">&nbsp;0</span></p>
+      </div>
+    </div>
+    <p id="result"></p>
+    <button id="btn1" type="button" onclick="flip()">Let's Play</button>
+
+    <script>
+      let my_score = 0;
+      let computer_score = 0;
+      function flip() {
+        let btn1 = document.getElementById("btn1");
+        btn1.setAttribute("disabled", "");
+        let my_card = document.getElementById("my_card");
+        let computer_card = document.getElementById("computer_card");
+        let resultMyCard = Math.floor(Math.random() * (14 - 2 + 1) + 2);
+        let resultComputerCard = Math.floor(Math.random() * (14 - 2 + 1) + 2);
+        my_card.setAttribute("src", `img/${resultMyCard}.png`);
+        computer_card.setAttribute("src", `img/${resultComputerCard}.png`);
+        if (my_score < 5 && computer_score < 5) {
+          if (resultMyCard > resultComputerCard) {
+            document.getElementById("alert").innerHTML = "Player Won";
+            document.getElementById("alert").style.color = "#ffc107";
+            my_score++;
+            document.getElementById("my_score").innerHTML = ` ${my_score}`;
+          } else if (resultMyCard < resultComputerCard) {
+            document.getElementById("alert").innerHTML = "Computer has Won";
+            document.getElementById("alert").style.color = "#dc3545";
+            computer_score++;
+            document.getElementById(
+              "computer_score"
+            ).innerHTML = ` ${computer_score}`;
+          } else {
+            document.getElementById("alert").innerHTML = "Draw";
+            document.getElementById("alert").style.color = "#adb5bd";
+          }
+          setTimeout(back_to_defult, 2000);
+        }
+      }
+      function back_to_defult() {
+        let btn1 = document.getElementById("btn1");
+        let btn2 = document.createElement("button");
+        if (my_score == 5) {
+          document.getElementById("result").innerHTML = "You are the winner!";
+          document.getElementById("result").style.color = "#ffc107";
+          btn2.innerHTML = "Let's Play again";
+          btn2.setAttribute("id", "btn2");
+          btn2.addEventListener("click", restGame);
+          document.body.appendChild(btn2);
+          btn1.remove();
+        } else if (computer_score == 5) {
+          document.getElementById("result").innerHTML =
+            "Computer won the game!";
+          document.getElementById("result").style.color = "#dc3545";
+          btn2.innerHTML = "Let's Play again";
+          btn2.setAttribute("id", "btn2");
+          btn2.addEventListener("click", restGame);
+          document.body.appendChild(btn2);
+          btn1.remove();
+        } else {
+          document.getElementById("my_card").setAttribute("src", "img/opp.jpg");
+          document
+            .getElementById("computer_card")
+            .setAttribute("src", "img/opp.jpg");
+          document.getElementById("btn1").removeAttribute("disabled");
+          document.getElementById("alert").innerHTML = "";
+        }
+      }
+      function restGame() {
+        my_score = 0;
+        computer_score = 0;
+        let btn1 = document.createElement("button");
+        btn1.setAttribute("id","btn1")
+        btn1.innerHTML = "Let's Play";
+        document.getElementById("my_score").innerHTML = ` ${my_score}`;
+        document.getElementById(
+          "computer_score"
+        ).innerHTML = ` ${computer_score}`;
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("alert").innerHTML = "";
+        document.getElementById("my_card").setAttribute("src", "img/opp.jpg");
+        document
+          .getElementById("computer_card")
+          .setAttribute("src", "img/opp.jpg");
+        document.getElementById("btn2").remove();
+        btn1.innerHTML = "Let's play";
+        btn1.addEventListener("click",flip);
+        document.body.appendChild(btn1);
+        
+      }
+    </script>
+  </body>
+</html>
